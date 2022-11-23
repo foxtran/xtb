@@ -207,29 +207,32 @@ subroutine initMolecule &
 
    call mol%allocate(nAt)
 
+   mol%lattice = 0.0_wp
    if (present(lattice)) then
-      mol%lattice = lattice
-   else
-      mol%lattice = 0.0_wp
+      if (size(lattice) /= 0) then
+         mol%lattice = lattice
+      end if
    end if
 
    if (present(pbc)) then
-      mol%pbc = pbc
       mol%npbc = count(pbc)
+      mol%pbc = .false.
+      if (mol%npbc /= 0) mol%pbc = pbc
       if (any(pbc)) then
          mol%boundaryCondition = boundaryCondition%pbc3d
       else
          mol%boundaryCondition = boundaryCondition%cluster
       end if
    else
+      mol%boundaryCondition = boundaryCondition%cluster
+      mol%pbc = .false.
+      mol%npbc = 0
       if (present(lattice)) then
-         mol%boundaryCondition = boundaryCondition%pbc3d
-         mol%pbc = .true.
-         mol%npbc = 3
-      else
-         mol%boundaryCondition = boundaryCondition%cluster
-         mol%pbc = .false.
-         mol%npbc = 0
+         if (size(lattice) /= 0) then
+            mol%boundaryCondition = boundaryCondition%pbc3d
+            mol%pbc = .true.
+            mol%npbc = 3
+         end if
       end if
    end if
 
