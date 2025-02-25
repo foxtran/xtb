@@ -203,7 +203,7 @@ endif
 ## TESTSUITE
 ## ========================================== ##
 # make sure the correct library is loaded
-xtbenv = environment()
+xtbenv = environment({'MALLOC_PERTURB_': '103'}))
 xtbenv.prepend('LD_LIBRARY_PATH', meson.current_build_dir())
 xtbenv.prepend('PYTHONPATH', meson.current_source_dir() / 'python')
 xtbenv.set('XTBPATH', meson.current_source_dir())
