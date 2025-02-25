@@ -43,5 +43,6 @@ jobs:
            run: meson test -C ${{ env.BUILD_DIR }} --print-errorlogs --no-rebuild -t 120 --suite xtb
            env:
             OMP_NUM_THREADS: 2,1
+            MALLOC_PERTURB_: 103
          - name: Upload coverage report
            run: bash <(curl -s https://codecov.io/bash)
