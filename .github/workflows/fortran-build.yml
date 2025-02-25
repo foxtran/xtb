@@ -44,5 +44,3 @@ jobs:
            env:
             OMP_NUM_THREADS: 2,1
             MALLOC_PERTURB_: 103
-         - name: Upload coverage report
-           run: bash <(curl -s https://codecov.io/bash)
