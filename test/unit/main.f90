@@ -16,6 +16,7 @@
 
 !> Driver for unit testing
 program tester
+   use, intrinsic :: ieee_exceptions
    use, intrinsic :: iso_fortran_env, only : error_unit
    use testdrive, only : new_testsuite, testsuite_type, select_suite, run_selected, &
       & get_argument, unittest_type, collect_interface, error_type
@@ -51,6 +52,8 @@ program tester
    character(len=:), allocatable :: suite_name, test_name
    type(testsuite_type), allocatable :: testsuites(:)
    character(len=*), parameter :: fmt = '("#", *(1x, a))'
+
+   call ieee_set_flag(ieee_invalid, .true.)
 
    call mctc_init('test',10,.true.)
 
