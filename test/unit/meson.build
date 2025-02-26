@@ -84,6 +84,10 @@ tester = executable(
 foreach t : tests
   test(t, tester, args: t, suite: 'unit', env: xtbenv)
 endforeach
+foreach mp : range(255)
+  xtbenv.set('MALLOC_PERTURB_', mp.to_string())
+  test('gfnff', tester, args: t, suite: 'unit', env: xtbenv)
+endforeach
 test('ptb', tester, args: 'ptb', suite: 'unit', env: xtbenv)
 
 # some very basic checks to see if the executable reacts at all
