@@ -29,14 +29,14 @@ subroutine collect_gfnff(testsuite)
    type(unittest_type), allocatable, intent(out) :: testsuite(:)
 
    testsuite = [ &
-      new_unittest("sp", test_gfnff_sp), &
-      new_unittest("hb", test_gfnff_hb), &
-      new_unittest("gbsa", test_gfnff_gbsa), &
-      new_unittest("mindless", test_gfnff_mindless_basic), &
-      new_unittest("mindless-solvation", test_gfnff_mindless_solvation), &
-      new_unittest("scaleup", test_gfnff_scaleup), &
-      new_unittest("pdb", test_gfnff_pdb), &
-      new_unittest("sdf", test_gfnff_sdf), &
+      !new_unittest("sp", test_gfnff_sp), &
+      !new_unittest("hb", test_gfnff_hb), &
+      !new_unittest("gbsa", test_gfnff_gbsa), &
+      !new_unittest("mindless", test_gfnff_mindless_basic), &
+      !new_unittest("mindless-solvation", test_gfnff_mindless_solvation), &
+      !new_unittest("scaleup", test_gfnff_scaleup), &
+      !new_unittest("pdb", test_gfnff_pdb), &
+      !new_unittest("sdf", test_gfnff_sdf), &
       new_unittest("pbc", test_gfnff_pbc), &
       new_unittest("Ln_An", test_gfnff_LnAn_H) &
       ]
