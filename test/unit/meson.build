@@ -86,7 +86,7 @@ foreach t : tests
 endforeach
 foreach mp : range(255)
   xtbenv.set('MALLOC_PERTURB_', mp.to_string())
-  test('gfnff', tester, args: t, suite: 'unit', env: xtbenv)
+  test('gfnff', tester, args: 'gfnff', suite: 'unit', env: xtbenv)
 endforeach
 test('ptb', tester, args: 'ptb', suite: 'unit', env: xtbenv)
 
