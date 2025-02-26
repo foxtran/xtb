@@ -32,7 +32,7 @@ jobs:
            run: pip install meson ninja cmake
          - name: Configure build
            run: >-
-            meson setup ${{ env.BUILD_DIR }} --buildtype=debug --warnlevel=0 -Db_coverage=true ${{ env.MESON_ARGS }}
+            meson setup ${{ env.BUILD_DIR }} --buildtype=debug --warnlevel=0 -Db_coverage=true -Ddebug=true ${{ env.MESON_ARGS }}
            env:
             FC: gfortran-${{ matrix.version }}
             CC: gcc-${{ matrix.version }}
