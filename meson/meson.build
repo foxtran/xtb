@@ -27,6 +27,7 @@ endif
 fopts = []
 if fc_id == 'gcc'
   fopts = [
+    '-g',
     '-fdefault-real-8',
     '-fdefault-double-8',
     '-ffree-line-length-none',
