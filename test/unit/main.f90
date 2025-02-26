@@ -54,6 +54,7 @@ program tester
    character(len=*), parameter :: fmt = '("#", *(1x, a))'
 
    call ieee_set_flag(ieee_invalid, .true.)
+   call ieee_set_flag(ieee_divide_by_zero, .true.)
 
    call mctc_init('test',10,.true.)
 
