@@ -32,7 +32,32 @@ if not testdrive_dep.found()
 endif
 
 tests = [
+  'atomlist',
+  'coordinationnumber',
+  'coulomb',
+  'dftd3',
+  'dftd4',
+  'docking',
+  'eeq',
+  'gfn0',
+  'gfn1',
+  'gfn2',
   'gfnff',
+  'hessian',
+  'iff',
+  'latticepoint',
+  'molecule',
+  'oniom',
+  'dipro',
+  'pbc-tools',
+  'peeq',
+  'repulsion',
+  'symmetry',
+  'tblite',
+  'thermo',
+  'vertical',
+  'wsc',
+  'cpx',
 ]
 
 test_srcs = files(
@@ -57,10 +82,7 @@ tester = executable(
 )
 
 foreach t : tests
-  foreach mp : range(255)
-    xtbenv.set('MALLOC_PERTURB_', mp.to_string())
-    test(t, tester, args: t, suite: 'unit', env: xtbenv)
-  endforeach
+  test(t, tester, args: t, suite: 'unit', env: xtbenv)
 endforeach
 test('ptb', tester, args: 'ptb', suite: 'unit', env: xtbenv)
 
