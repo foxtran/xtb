@@ -258,6 +258,7 @@ set_target_properties(
   Fortran_MODULE_DIRECTORY ${PROJECT_BINARY_DIR}/include
   RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}
   OUTPUT_NAME "${PROJECT_NAME}"
+  LINKER_LANGUAGE Fortran
 )
 
 target_include_directories(
