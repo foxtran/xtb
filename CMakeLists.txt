@@ -17,6 +17,7 @@
 cmake_minimum_required(VERSION 3.17)
 option(WITH_OBJECT "To build using object library" TRUE)
 option(INSTALL_MODULES "Install Fortran module files to include directory." FALSE)
+option(WITH_TRACY "Add low-latency runtime profiler" FALSE)
 
 # Buggy CMake versions
 if (CMAKE_VERSION VERSION_GREATER_EQUAL 3.27.0 AND CMAKE_VERSION VERSION_LESS 3.28.0)
@@ -56,6 +57,24 @@ endif()
 
 if(NOT TARGET "test-drive::test-drive")
   find_package("test-drive" REQUIRED)
+endif()
+
+if(WITH_TRACY)
+  option(TRACY_Fortran "" ON)
+  option(TRACY_DELAYED_INIT "" ON)
+  option(TRACY_MANUAL_LIFETIME "" ON)
+
+  FetchContent_Declare(
+    tracy
+    GIT_REPOSITORY https://github.com/wolfpld/tracy.git
+    GIT_TAG        master
+    GIT_SHALLOW    TRUE
+    GIT_PROGRESS   TRUE
+  )
+
+  FetchContent_MakeAvailable(tracy)
+
+  add_compile_definitions(WITH_TRACY)
 endif()
 
 # Sources: initialize program sources (prog) and library sources (srcs) empty
@@ -149,7 +168,9 @@ target_link_libraries(
    "$<$<BOOL:${WITH_OpenMP}>:OpenMP::OpenMP_Fortran>"
    "mctc-lib::mctc-lib"
    "$<$<BOOL:${WITH_CPCMX}>:cpcmx::cpcmx>"
-   $<$<BOOL:${WITH_TBLITE}>:tblite::tblite>
+   "$<$<BOOL:${WITH_TBLITE}>:tblite::tblite>"
+   "$<$<BOOL:${WITH_TRACY}>:TracyClient>"
+   "$<$<BOOL:${WITH_TRACY}>:TracyClientF90>"
 )
 
 set_target_properties(
@@ -190,6 +211,8 @@ if (WITH_OBJECT)
       "mctc-lib::mctc-lib"
       "$<$<BOOL:${WITH_CPCMX}>:cpcmx::cpcmx>"
       "$<$<BOOL:${WITH_TBLITE}>:tblite::tblite>"
+      "$<$<BOOL:${WITH_TRACY}>:TracyClient>"
+      "$<$<BOOL:${WITH_TRACY}>:TracyClientF90>"
    )
 
    set_target_properties(
