@@ -30,6 +30,9 @@ project(
   VERSION "6.7.1" 
   LANGUAGES "C" "Fortran"
 )
+if(WITH_TRACY)
+  enable_language(CXX)
+endif()
 
 enable_testing()
 
