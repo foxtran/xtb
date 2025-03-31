@@ -248,6 +248,8 @@ subroutine buildIsoAnisotropicH1(n,at,ndim,nshell,nmat,ndp,nqp,matlist,mdlst,mql
 
    !$omp end parallel
 
+   !$omp end parallel
+
 end subroutine buildIsoAnisotropicH1
 
 
