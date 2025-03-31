@@ -129,6 +129,8 @@ if(WITH_OBJECT)
       "mctc-lib::mctc-lib"
       "$<$<BOOL:${WITH_CPCMX}>:cpcmx::cpcmx>"
       "$<$<BOOL:${WITH_TBLITE}>:tblite::tblite>"
+      "$<$<BOOL:${WITH_TRACY}>:TracyClient>"
+      "$<$<BOOL:${WITH_TRACY}>:TracyClientF90>"
       "$<$<BOOL:${WITH_OpenMP}>:OpenMP::OpenMP_Fortran>"
    )
 
