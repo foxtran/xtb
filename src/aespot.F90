@@ -803,7 +803,7 @@ subroutine molmom(iunit,n,xyz,q,dipm,qp,dip,d3)
    integer(c_int64_t) :: srcloc_id
 #endif
 #ifdef WITH_TRACY
-   srcloc_id = tracy_alloc_srcloc(__LINE__, "src/aespot.F90", "molmom", color=TracyColors%OlveGrab1)
+   srcloc_id = tracy_alloc_srcloc(__LINE__, "src/aespot.F90", "molmom", color=TracyColors%OliveDrab1)
    ctx = tracy_zone_begin(srcloc_id)
 #endif
    rr1 = 0.0_wp
