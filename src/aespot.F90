@@ -622,8 +622,8 @@ subroutine aniso_electro_openmp(aesData,nat,at,xyz,q,dipm,qp,gab3,gab5,e,epol)
    e11 = 0.0_wp
 
    !$omp parallel do default(none) &
-   !$omp private(i, k, l, kll, q1, rr, dp1, qp1, tt, tt3, eq) &
-   !$omp shared(aesData, nat, q, xyz, dipm, qp) &
+   !$omp private(i, k, l, kl, q1, rr, dp1, qp1, tt, tt3, eq) &
+   !$omp shared(aesData, nat, at, q, xyz, dipm, qp) &
    !$omp reduction(+:epol) &
    !$omp schedule(static)
    do i = 1, nat
@@ -648,7 +648,7 @@ subroutine aniso_electro_openmp(aesData,nat,at,xyz,q,dipm,qp,gab3,gab5,e,epol)
 
    !$omp parallel do default(none) &
    !$omp private(i,j,k,kj,l,kl,q1,rr,dp1,qp1,rij,r2,ed,eq,edd,tt,tt3) &
-   !$omp shared() &
+   !$omp shared(nat, q, xyz, dipm, qp, gab3, gab5) &
    !$omp reduction(+:e01, e02, e11) &
    !$omp schedule(dynamic,32) collapse(2)
    do i = 1, nat
