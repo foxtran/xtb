@@ -246,43 +246,4 @@ subroutine mctc_dsygvd_factorized(self, env, amat, bmat_factorized, eval)
 
 end subroutine mctc_dsygvd_factorized
 
-
-
-subroutine mctc_ssygvd_factorized(self, env, amat, bmat_factorized, eval)
-   character(len=*), parameter :: source = 'mctc_lapack_ssygvd_factorized'
-   class(TEigenSolver), intent(inout) :: self
-   type(TEnvironment), intent(inout) :: env
-   real(sp), intent(inout) :: amat(:, :)
-   real(sp), intent(in) :: bmat_factorized(:, :)
-   real(sp), intent(out) :: eval(:)
-   integer :: info, lswork, liwork
-
-   lswork = size(self%swork)
-   liwork = size(self%iwork)
-
-   CALL lapack_sygst( 1, 'u', self%n, amat, self%n, bmat_factorized, self%n, info )
-   CALL lapack_syevd( 'v', 'u', self%n, amat, self%n, eval, self%swork, lswork, self%iwork, liwork, info )
-   CALL blas_trsm( 'l', 'u', 'n', 'n', self%n, self%n, 1.0_sp, bmat_factorized, self%n, amat, self%n )
-
-end subroutine mctc_ssygvd_factorized
-
-
-subroutine mctc_dsygvd_factorized(self, env, amat, bmat_factorized, eval)
-   character(len=*), parameter :: source = 'mctc_lapack_dsygvd_factorized'
-   class(TEigenSolver), intent(inout) :: self
-   type(TEnvironment), intent(inout) :: env
-   real(dp), intent(inout) :: amat(:, :)
-   real(dp), intent(in) :: bmat_factorized(:, :)
-   real(dp), intent(out) :: eval(:)
-   integer :: info, ldwork, liwork
-
-   ldwork = size(self%dwork)
-   liwork = size(self%iwork)
-
-   CALL lapack_sygst( 1, 'u', self%n, amat, self%n, bmat_factorized, self%n, info )
-   CALL lapack_syevd( 'v', 'u', self%n, amat, self%n, eval, self%dwork, ldwork, self%iwork, liwork, info )
-   CALL blas_trsm( 'l', 'u', 'n', 'n', self%n, self%n, 1.0_dp, bmat_factorized, self%n, amat, self%n )
-
-end subroutine mctc_dsygvd_factorized
-
 end module xtb_mctc_lapack_eigensolve
