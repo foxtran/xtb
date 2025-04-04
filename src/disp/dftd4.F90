@@ -2032,22 +2032,25 @@ subroutine atm_gradient_latp &
    real(wp), intent(inout) :: sigma(:, :)
    real(wp), intent(inout) :: dEdcn(:)
 
-   integer :: iat, jat, kat, ati, atj, atk, jtr, ktr
+   integer :: iat, jat, kat, nat, ati, atj, atk, jtr, ktr
    real(wp) :: cutoff2
    real(wp) :: rij(3), rjk(3), rik(3), r2ij, r2jk, r2ik
    real(wp) :: c6ij, c6jk, c6ik, cij, cjk, cik, scale
    real(wp) :: dE, dG(3, 3), dS(3, 3), dCN(3)
    real(wp), parameter :: sr = 4.0_wp/3.0_wp
 
+   nat = len(mol)
    cutoff2 = cutoff**2
 
    !$omp parallel do default(none) reduction(+:energies, gradient, sigma, dEdcn) &
-   !$omp shared(mol, r4r2, par, trans, cutoff2, c6, dc6dcn) &
+   !$omp shared(nat, mol, r4r2, par, trans, cutoff2, c6, dc6dcn) &
    !$omp private(iat, ati, jat, atj, kat, atk, c6ij, cij, c6ik, c6jk, cik, cjk, &
-   !$omp& rij, r2ij, ktr, rik, r2ik, rjk, r2jk, scale, dE, dG, dS, dCN)
-   do iat = 1, len(mol)
-      ati = mol%at(iat)
-      do jat = 1, iat
+   !$omp& rij, r2ij, ktr, rik, r2ik, rjk, r2jk, scale, dE, dG, dS, dCN) &
+   !$omp schedule(dynamic,32) collapse(2)
+   do iat = 1, nat
+      do jat = 1, nat
+         if (jat > iat) cycle
+         ati = mol%at(iat)
          atj = mol%at(jat)
 
          c6ij = c6(jat,iat)
