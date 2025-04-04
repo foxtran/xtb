@@ -470,7 +470,7 @@ subroutine fockelectro(nat,nao,aoat2,p,s,dpint,qpint,vs,vd,vq,e)
 #endif
 
 #ifdef WITH_TRACY
-   srcloc_id = tracy_alloc_srcloc(__LINE__, "src/aespot.F90", "fockelectro", color=TracyColors%OliveGrab1)
+   srcloc_id = tracy_alloc_srcloc(__LINE__, "src/aespot.F90", "fockelectro", color=TracyColors%OliveDrab1)
    ctx = tracy_zone_begin(srcloc_id)
 #endif
 
@@ -543,7 +543,7 @@ subroutine setvsdq(aesData,nat,at,xyz,q,dipm,qp,gab3,gab5,vs,vd,vq)
    integer(c_int64_t) :: srcloc_id
 #endif
 #ifdef WITH_TRACY
-   srcloc_id = tracy_alloc_srcloc(__LINE__, "src/aespot.F90", "setvsdq", color=TracyColors%OliveGrab1)
+   srcloc_id = tracy_alloc_srcloc(__LINE__, "src/aespot.F90", "setvsdq", color=TracyColors%OliveDrab1)
    ctx = tracy_zone_begin(srcloc_id)
 #endif
    vs = 0.0_wp
@@ -692,7 +692,7 @@ subroutine setdvsdq(aesData,nat,at,xyz,q,dipm,qp,gab3,gab5,vs,vd,vq)
    integer(c_int64_t) :: srcloc_id
 #endif
 #ifdef WITH_TRACY
-   srcloc_id = tracy_alloc_srcloc(__LINE__, "src/aespot.F90", "setdvsdq", color=TracyColors%OliveGrab1)
+   srcloc_id = tracy_alloc_srcloc(__LINE__, "src/aespot.F90", "setdvsdq", color=TracyColors%OliveDrab1)
    ctx = tracy_zone_begin(srcloc_id)
 #endif
    vs = 0.0_wp
@@ -937,7 +937,7 @@ subroutine aniso_grad(nat,at,xyz,q,dipm,qp,kdmp3,kdmp5, &
 #endif
 
 #ifdef WITH_TRACY
-   srcloc_id = tracy_alloc_srcloc(__LINE__, "src/aespot.F90", "aniso_grad", color=TracyColors%OliveGrab1)
+   srcloc_id = tracy_alloc_srcloc(__LINE__, "src/aespot.F90", "aniso_grad", color=TracyColors%OliveDrab1)
    ctx = tracy_zone_begin(srcloc_id)
 #endif
 
@@ -1100,7 +1100,7 @@ subroutine mmomgabzero(nat,at,xyz,kdmp3,kdmp5,radcn,gab3,gab5)
 #endif
 
 #ifdef WITH_TRACY
-   srcloc_id = tracy_alloc_srcloc(__LINE__, "src/aespot.F90", "mmomgabzero", color=TracyColors%OliveGrab1)
+   srcloc_id = tracy_alloc_srcloc(__LINE__, "src/aespot.F90", "mmomgabzero", color=TracyColors%OliveDrab1)
    ctx = tracy_zone_begin(srcloc_id)
 #endif
 
