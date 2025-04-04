@@ -1999,6 +1999,11 @@ subroutine d4_gradient_latp &
    real(wp), allocatable :: energies(:), energies3(:), dEdcn(:), dEdq(:)
 
 #ifdef WITH_TRACY
+   type(tracy_zone_context) :: ctx
+   integer(c_int64_t) :: srcloc_id
+#endif
+
+#ifdef WITH_TRACY
    srcloc_id = tracy_alloc_srcloc(__LINE__, "src/disp/dftd4.F90", "d4_gradient_latp", color=TracyColors%SteelBlue1)
    ctx = tracy_zone_begin(srcloc_id)
 #endif
