@@ -2165,6 +2165,10 @@ end subroutine disp_gradient_latp
 subroutine d4_atm_gradient_latp &
       & (mol, dispm, trans, par, g_a, g_c, wf, cutoff, cn, dcndr, dcndL, &
       &  energy, gradient, sigma)
+#ifdef WITH_TRACY
+   use tracy
+   use iso_c_binding, only: c_int64_t
+#endif
    use xtb_type_molecule
    use xtb_type_neighbourlist
    use xtb_type_param
@@ -2217,6 +2221,16 @@ subroutine d4_atm_gradient_latp &
    real(wp), allocatable :: c6(:, :), dc6dcn(:, :), dc6dq(:, :)
    real(wp), allocatable :: energies(:), energies3(:), dEdcn(:), dEdq(:)
 
+#ifdef WITH_TRACY
+   type(tracy_zone_context) :: ctx
+   integer(c_int64_t) :: srcloc_id
+#endif
+
+#ifdef WITH_TRACY
+   srcloc_id = tracy_alloc_srcloc(__LINE__, "src/disp/dftd4.F90", "d4_atm_gradient_latp", color=TracyColors%SteelBlue1)
+   ctx = tracy_zone_begin(srcloc_id)
+#endif
+
    nat = len(mol)
    max_ref = maxval(dispm%nref(mol%at))
    allocate(zetavec(max_ref, nat), zetadcn(max_ref, nat), zetadq(max_ref, nat), &
@@ -2244,6 +2258,10 @@ subroutine d4_atm_gradient_latp &
    call mctc_gemv(dcndL, dEdcn, sigma, beta=1.0_wp)
 
    energy = energy + sum(energies)
+
+#ifdef WITH_TRACY
+   call tracy_zone_end(ctx)
+#endif
 
 end subroutine d4_atm_gradient_latp
 
@@ -2274,6 +2292,16 @@ subroutine atm_gradient_latp &
    real(wp) :: c6ij, c6jk, c6ik, cij, cjk, cik, scale
    real(wp) :: dE, dG(3, 3), dS(3, 3), dCN(3)
    real(wp), parameter :: sr = 4.0_wp/3.0_wp
+
+#ifdef WITH_TRACY
+   type(tracy_zone_context) :: ctx
+   integer(c_int64_t) :: srcloc_id
+#endif
+
+#ifdef WITH_TRACY
+   srcloc_id = tracy_alloc_srcloc(__LINE__, "src/disp/dftd4.F90", "atm_gradient_latp", color=TracyColors%SteelBlue1)
+   ctx = tracy_zone_begin(srcloc_id)
+#endif
 
    cutoff2 = cutoff**2
 
@@ -2336,6 +2364,10 @@ subroutine atm_gradient_latp &
       end do
    end do
    !$omp end parallel do
+
+#ifdef WITH_TRACY
+   call tracy_zone_end(ctx)
+#endif
 
 end subroutine atm_gradient_latp
 
