@@ -532,6 +532,7 @@ subroutine scf(env, mol, wfn, basis, pcem, xtbData, solvation, &
 
    ! ------------------------------------------------------------------------
    ! dispersion (DFT-D type correction)
+   if (do_tracying) call zone_unk%start("src/scf_module.F90", "Dispersion", __LINE__, color=TracyColors%Tan2)
    call latp%getLatticePoints(trans, 60.0_wp)
    if (xtbData%level == 1) then
       call d3_gradient &
@@ -541,23 +542,24 @@ subroutine scf(env, mol, wfn, basis, pcem, xtbData, solvation, &
       allocate(scD4)
       call init(scD4, xtbData%dispersion, mol)
    endif
+   if (do_tracying) call zone_unk%end()
 
    if (profile) call timer%measure(2)
    if (profile) call timer%measure(4,"integral evaluation")
 
    ! ========================================================================
    ! Overlap integrals
+
+   if (do_tracying) call zone_unk%start("src/scf_module.F90", "Allocate overlap", __LINE__, color=TracyColors%Tan2)
    allocate(S(basis%nao,basis%nao), &
             dpint(3,basis%nao,basis%nao), &
       &     qpint(6,basis%nao,basis%nao), &
       &     source = 0.0_wp)
 
-   if (do_tracying) call zone_unk%start("src/scf_module.F90", "SelfEnergy", __LINE__, color=TracyColors%Tan2)
+   if (do_tracying) call zone_unk%end()
 
    call getSelfEnergy(xtbData%hamiltonian, xtbData%nShell, mol%at, cn=cn, &
       & selfEnergy=selfEnergy, dSEdcn=dSEdcn)
-
-   if (do_tracying) call zone_unk%end()
 
    ! compute integrals and prescreen to set up list arrays
    call latp%getLatticePoints(trans, sqrt(800.0_wp))
