@@ -1114,7 +1114,8 @@ subroutine aniso_grad(nat,at,xyz,q,dipm,qp,kdmp3,kdmp5, &
    !$omp private(ed,eq,edd,e01,e02,e11,r2,tt,tt3,q1,dxi) &
    !$omp private(tmp2,tmp3,rab,rabi,ddm2,ddm3a,ddm3b,qqa,qqb) &
    !$omp private(dgab3,dgab5,damp1,damp2,ddamp,qs2) &
-   !$omp shared(nat,at,xyz,q,dipm,qp,gab3,gab5,kdmp3,kdmp5,radcn,dcn)
+   !$omp shared(nat,at,xyz,q,dipm,qp,gab3,gab5,kdmp3,kdmp5,radcn,dcn) &
+   !$omp schedule(dynamic,1)
    do i = 1,nat
       q1 = q(i)
       rr(1:3) = xyz(1:3,i)
