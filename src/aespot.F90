@@ -1259,14 +1259,18 @@ subroutine mmomgabzero(nat,at,xyz,kdmp3,kdmp5,radcn,gab3,gab5)
    real(wp) damp,ddamp
 
    real(wp) tmp1,tmp2,rr(3)
-   integer i,j,k,l,lin
+   integer i,j,k
 
    type(xtb_zone) :: zone
    if (do_tracying) call zone%start("src/aespot.F90", "mmomgabzero", __LINE__, color=TracyColors%OliveDrab1)
 
    !!!!!!! set up damped Coulomb operators for multipole interactions
-   gab3 = 0.0_wp ! for r**-2 decaying q-dip term
-   gab5 = 0.0_wp ! for r**-3 decaying terms (q-qpol,dip-dip)
+   !gab3 = 0.0_wp ! for r**-2 decaying q-dip term
+   !gab5 = 0.0_wp ! for r**-3 decaying terms (q-qpol,dip-dip)
+   !$omp parallel do default(none) &
+   !$omp shared(nat,at,xyz,radcn,kdmp3,kdmp5,gab3,gab5) &
+   !$omp private(damp,ddamp,tmp1,tmp2,rr,i,j,k) &
+   !$omp schedule(dynamic,1) collapse(2)
    do i = 1,nat
       do j = 1,nat
          if (j.ge.i) cycle
