@@ -884,6 +884,12 @@ subroutine setdvsdq(aesData,nat,at,xyz,q,dipm,qp,gab3,gab5,vs,vd,vq)
    vd = 0.0_wp
    vq = 0.0_wp
    ! set up overlap proportional potential
+   !$omp parallel do default(none) &
+   !$omp shared(aesData,nat,at,q,dipm,xyz,qp,gab3,gab5,vs,vd,vq) &
+   !$omp private(ra,dra,rb,stmp,dum3a,dum5a,t1a,t2a,t3a,t4a,r2a) &
+   !$omp private(r2ab,t1b,t2b,t3b,t4b,dum3b,dum5b,dtmp,qtmp,g3,g5) &
+   !$omp private(qs1,qs2) &
+   !$omp private(i,j,k,l1,l2,ll,m,mx,ki,kj)
    do i = 1,nat
       ra(1:3) = xyz(1:3,i)
       stmp = 0.0_wp
