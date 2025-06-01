@@ -1321,6 +1321,7 @@ end subroutine get_radcn
 ! dcn   : on input  : derivatives of CN(j) w.r.t. Cart. directions of i
 !       : on output : derivatives of RADCN(j) w.r.t. Cart. directions of i
 subroutine dradcn(aesData,n,at,cn,shift,expo,rmax,dcn)
+   use xtb_tracying
    implicit none
    class(TMultipoleData), intent(in) :: aesData
    integer, intent (in) :: n,at(:)
@@ -1328,6 +1329,10 @@ subroutine dradcn(aesData,n,at,cn,shift,expo,rmax,dcn)
    real(wp), intent (inout) :: dcn(:,:,:)
    real(wp) rco,t1,t2
    integer i
+
+   type(xtb_zone) :: zone
+   if (do_tracying) call zone%start("src/aespot.F90", "dradcn", __LINE__, color=TracyColors%OliveDrab1)
+
    !$omp parallel do default(none) &
    !$omp shared(n,at,cn,shift,expo,rmax,dcn,aesData) &
    !$omp private(rco,t1,t2,i)
