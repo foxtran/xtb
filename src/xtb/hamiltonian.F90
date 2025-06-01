@@ -45,6 +45,7 @@ contains
 
 
 subroutine getSelfEnergyFlat(hData, nShell, at, cn, qat, selfEnergy, dSEdcn, dSEdq)
+   use xtb_tracying
    type(THamiltonianData), intent(in) :: hData
    integer, intent(in) :: nShell(:)
    integer, intent(in) :: at(:)
@@ -55,6 +56,9 @@ subroutine getSelfEnergyFlat(hData, nShell, at, cn, qat, selfEnergy, dSEdcn, dSE
    real(wp), intent(out), optional :: dSEdq(:)
 
    integer :: ind, iAt, iZp, iSh
+
+   type(xtb_zone) :: zone
+   if (do_tracying) call zone%start("src/xtb/hamiltonian.F90", "getSelfEnergyFlat", __LINE__, color=TracyColors%Gold3)
 
    selfEnergy(:) = 0.0_wp
    if (present(dSEdcn)) dSEdcn(:) = 0.0_wp
@@ -96,6 +100,7 @@ end subroutine getSelfEnergyFlat
 
 
 subroutine getSelfEnergy2D(hData, nShell, at, cn, qat, selfEnergy, dSEdcn, dSEdq)
+   use xtb_tracying
    type(THamiltonianData), intent(in) :: hData
    integer, intent(in) :: nShell(:)
    integer, intent(in) :: at(:)
@@ -106,6 +111,9 @@ subroutine getSelfEnergy2D(hData, nShell, at, cn, qat, selfEnergy, dSEdcn, dSEdq
    real(wp), intent(out), optional :: dSEdq(:, :)
 
    integer :: iAt, iZp, iSh
+
+   type(xtb_zone) :: zone
+   if (do_tracying) call zone%start("src/xtb/hamiltonian.F90", "getSelfEnergy2D", __LINE__, color=TracyColors%Gold3)
 
    selfEnergy(:, :) = 0.0_wp
    if (present(dSEdcn)) dSEdcn(:, :) = 0.0_wp
