@@ -1259,7 +1259,7 @@ subroutine mmomgabzero(nat,at,xyz,kdmp3,kdmp5,radcn,gab3,gab5)
    real(wp) damp,ddamp
 
    real(wp) tmp1,tmp2,rr(3)
-   integer i,j,k
+   integer i,j,k,l
 
    type(xtb_zone) :: zone
    if (do_tracying) call zone%start("src/aespot.F90", "mmomgabzero", __LINE__, color=TracyColors%OliveDrab1)
@@ -1269,7 +1269,7 @@ subroutine mmomgabzero(nat,at,xyz,kdmp3,kdmp5,radcn,gab3,gab5)
    !gab5 = 0.0_wp ! for r**-3 decaying terms (q-qpol,dip-dip)
    !$omp parallel do default(none) &
    !$omp shared(nat,at,xyz,radcn,kdmp3,kdmp5,gab3,gab5) &
-   !$omp private(damp,ddamp,tmp1,tmp2,rr,i,j,k) &
+   !$omp private(damp,ddamp,tmp1,tmp2,rr,i,j,k,l) &
    !$omp schedule(dynamic,1) collapse(2)
    do i = 1,nat
       do j = 1,nat
