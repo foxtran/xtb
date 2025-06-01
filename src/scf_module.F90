@@ -329,7 +329,7 @@ subroutine scf(env, mol, wfn, basis, pcem, xtbData, solvation, &
 
    allocate(H0(basis%nao*(basis%nao+1)/2), &
    &        H0_noovlp(basis%nao*(basis%nao+1)/2), &
-   &        S(basis%nao,basis%nao),tmp(basis%nao), &
+   &        tmp(basis%nao), &
    &        X(basis%nao,basis%nao), &
    &        ves(basis%nshell), &
    &        zsh(basis%nshell),&
@@ -547,7 +547,8 @@ subroutine scf(env, mol, wfn, basis, pcem, xtbData, solvation, &
 
    ! ========================================================================
    ! Overlap integrals
-   allocate(dpint(3,basis%nao,basis%nao), &
+   allocate(S(basis%nao,basis%nao), &
+            dpint(3,basis%nao,basis%nao), &
       &     qpint(6,basis%nao,basis%nao), &
       &     source = 0.0_wp)
 

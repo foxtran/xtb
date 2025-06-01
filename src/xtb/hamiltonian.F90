@@ -180,12 +180,12 @@ subroutine build_SDQH0(nShell, hData, nat, at, nbf, nao, xyz, trans, selfEnergy,
    integer, intent(in)  :: primcount(:)
    real(wp),intent(in)  :: alp(:)
    real(wp),intent(in)  :: cont(:)
-   !> Overlap integral matrix
-   real(wp),intent(out) :: sint(nao,nao)
-   !> Dipole integral matrix
-   real(wp),intent(out) :: dpint(3,nao,nao)
-   !> Quadrupole integral matrix
-   real(wp),intent(out) :: qpint(6,nao,nao)
+   !> Overlap integral matrix (should be 0 at in)
+   real(wp),intent(inout) :: sint(nao,nao)
+   !> Dipole integral matrix (should be 0 at in)
+   real(wp),intent(inout) :: dpint(3,nao,nao)
+   !> Quadrupole integral matrix (should be 0 at in)
+   real(wp),intent(inout) :: qpint(6,nao,nao)
    !> Core Hamiltonian
    real(wp),intent(out) :: H0(:)
    !> Core Hamiltonian without overlap contribution
@@ -213,14 +213,6 @@ subroutine build_SDQH0(nShell, hData, nat, at, nbf, nao, xyz, trans, selfEnergy,
    ! integrals
    H0(:) = 0.0_wp
    H0_noovlp(:) = 0.0_wp
-   !$omp parallel do default(none) &
-   !$omp shared(nao, sint, dpint, qpint) &
-   !$omp private(i)
-   do i = 1, nao
-      sint(:,i) = 0.0_wp
-      dpint(:,:,i) = 0.0_wp
-      qpint(:,:,i) = 0.0_wp
-   end do
    ! --- Aufpunkt for moment operator
    point = 0.0_wp
 
