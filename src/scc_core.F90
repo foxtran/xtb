@@ -1233,11 +1233,6 @@ subroutine dmat(ndim,focc,C,P)
    if (do_tracying) call zone_alloc%end()
 
    ! acc enter data create(Ptmp(:,:)) copyin(C(:, :), focc(:), P(:, :))
-   ! acc kernels default(present)
-   if (do_tracying) call zone_set%start("src/scc_core.F90", "dmat-set1", __LINE__, color=TracyColors%Red)
-   Ptmp = 0.0_wp
-   if (do_tracying) call zone_set%end()
-   ! acc end kernels
 
    ! acc parallel
    ! acc loop gang collapse(2)
