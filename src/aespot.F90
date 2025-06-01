@@ -1326,8 +1326,11 @@ subroutine dradcn(aesData,n,at,cn,shift,expo,rmax,dcn)
    integer, intent (in) :: n,at(:)
    real(wp), intent (in)  :: cn(:),shift,expo,rmax
    real(wp), intent (inout) :: dcn(:,:,:)
-   real(wp) rco,t1,t2,t3,t4,tmp1,tmp2
-   integer i,j,k
+   real(wp) rco,t1,t2
+   integer i
+   !$omp parallel do default(none) &
+   !$omp shared(n,at,cn,shift,expo,rmax,dcn,aesData) &
+   !$omp private(rco,t1,t2,i)
    do i = 1,n
       rco = aesData%multiRad(at(i))             ! base radius of element
       t1 =exp(-expo*(cn(i)-aesData%valenceCN(at(i))-shift))  ! CN - VALCN - SHIFT

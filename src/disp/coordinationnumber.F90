@@ -407,7 +407,7 @@ subroutine ncoordLatP(mol, trans, cutoff, kcn, cfunc, dfunc, enscale, &
    !$omp parallel do default(none) private(den) shared(enscale, rcov, en)&
    !$omp reduction(+:cn, dcndr, dcndL) shared(mol, kcn, trans, cutoff2, nat) &
    !$omp private(jat, itr, ati, atj, r2, rij, r1, rc, countf, countd, stress) &
-   !$omp schedule(dynamic,32) collapse(2)
+   !$omp schedule(dynamic,1) collapse(2)
    do iat = 1, nat
       do jat = 1, nat
          if (jat > iat) cycle
