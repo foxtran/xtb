@@ -1225,28 +1225,37 @@ subroutine dmat(ndim,focc,C,P)
    integer :: i,m
    real(wp),allocatable :: Ptmp(:,:)
 
-   type(xtb_zone) :: zone
+   type(xtb_zone) :: zone, zone_alloc, zone_set
    if (do_tracying) call zone%start("src/scc_core.F90", "dmat", __LINE__, color=TracyColors%Red)
 
+   if (do_tracying) call zone_alloc%start("src/scc_core.F90", "dmat-alloc", __LINE__, color=TracyColors%Red)
    allocate(Ptmp(ndim,ndim))
+   if (do_tracying) call zone_alloc%end()
+
    ! acc enter data create(Ptmp(:,:)) copyin(C(:, :), focc(:), P(:, :))
    ! acc kernels default(present)
+   if (do_tracying) call zone_set%start("src/scc_core.F90", "dmat-set1", __LINE__, color=TracyColors%Red)
    Ptmp = 0.0_wp
+   if (do_tracying) call zone_set%end()
    ! acc end kernels
 
    ! acc parallel
    ! acc loop gang collapse(2)
+   if (do_tracying) call zone_set%start("src/scc_core.F90", "dmat-set2", __LINE__, color=TracyColors%Red)
    do m=1,ndim
       do i=1,ndim
          Ptmp(i,m)=C(i,m)*focc(m)
       enddo
    enddo
+   if (do_tracying) call zone_set%end()
    ! acc end parallel
    ! acc update host(Ptmp)
    call mctc_gemm(C, Ptmp, P, transb='t')
    ! acc exit data copyout(P(:,:)) delete(C(:,:), focc(:), Ptmp(:, :))
 
+   if (do_tracying) call zone_alloc%start("src/scc_core.F90", "dmat-dealloc", __LINE__, color=TracyColors%Red)
    deallocate(Ptmp)
+   if (do_tracying) call zone_alloc%end()
 
 end subroutine dmat
 
@@ -1312,11 +1321,13 @@ subroutine get_unrestricted_wiberg(n,ndim,at,xyz,Pa,Pb,S,wb,fila2)
    real(wp) xsum,rab
    integer i,j,k,m
 
-   type(xtb_zone) :: zone
+   type(xtb_zone) :: zone, zone_alloc
    if (do_tracying) call zone%start("src/scc_core.F90", "UWiberg", __LINE__, color=TracyColors%Orchid4)
 
+   call zone_alloc%start("src/scc_core.F90", "UWiberg-alloc", __LINE__, color=TracyColors%Orchid3)
    allocate(Ptmp_a(ndim,ndim))
    allocate(Ptmp_b(ndim,ndim))
+   call zone_alloc%end()
 
    ! P^(alpha) * S !
    call blas_gemm('N','N',ndim,ndim,ndim,1.0_wp,Pa,ndim,S,ndim,0.0_wp,Ptmp_a,ndim)
