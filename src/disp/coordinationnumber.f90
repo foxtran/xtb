@@ -385,20 +385,23 @@ subroutine ncoordLatP(mol, trans, cutoff, kcn, cfunc, dfunc, enscale, &
    !> Derivative of the CN with respect to strain deformations.
    real(wp), intent(out) :: dcndL(:, :, :)
 
-   integer :: iat, jat, ati, atj, itr
+   integer :: iat, jat, nat, ati, atj, itr
    real(wp) :: r2, r1, rc, rij(3), countf, countd(3), stress(3, 3), den, cutoff2
 
    cn = 0.0_wp
    dcndr = 0.0_wp
    dcndL = 0.0_wp
    cutoff2 = cutoff**2
+   nat = len(mol)
 
    !$omp parallel do default(none) private(den) shared(enscale, rcov, en)&
-   !$omp reduction(+:cn, dcndr, dcndL) shared(mol, kcn, trans, cutoff2) &
-   !$omp private(jat, itr, ati, atj, r2, rij, r1, rc, countf, countd, stress)
-   do iat = 1, len(mol)
-      ati = mol%at(iat)
-      do jat = 1, iat
+   !$omp reduction(+:cn, dcndr, dcndL) shared(mol, kcn, trans, cutoff2, nat) &
+   !$omp private(jat, itr, ati, atj, r2, rij, r1, rc, countf, countd, stress) &
+   !$omp schedule(dynamic,32) collapse(2)
+   do iat = 1, nat
+      do jat = 1, nat
+         if (jat > iat) cycle
+         ati = mol%at(iat)
          atj = mol%at(jat)
 
          if (enscale) then
