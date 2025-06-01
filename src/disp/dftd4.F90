@@ -607,7 +607,7 @@ subroutine d4(dispm,nat,ndim,at,wf,g_a,g_c,covcn,gw,c6abns)
 
    integer  :: i,ia,is,icn,ii,iii,j,jj,ja,k,l
    integer,allocatable :: itbl(:,:)
-   real(wp) :: twf,norm,aiw(23)
+   real(wp) :: twf,norm
 
    intrinsic :: maxval
 
@@ -627,6 +627,9 @@ subroutine d4(dispm,nat,ndim,at,wf,g_a,g_c,covcn,gw,c6abns)
       enddo
    enddo
 
+   !$omp parallel do default(none) &
+   !$omp shared(dispm,nat,ndim,at,wf,g_a,g_c,covcn,gw,c6abns,itbl) &
+   !$omp private(i,ia,is,icn,ii,iii,j,jj,ja,k,l,twf,norm)
    do i = 1, nat
       ia = at(i)
       norm = 0.0_wp
