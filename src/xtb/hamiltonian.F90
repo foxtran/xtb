@@ -213,9 +213,14 @@ subroutine build_SDQH0(nShell, hData, nat, at, nbf, nao, xyz, trans, selfEnergy,
    ! integrals
    H0(:) = 0.0_wp
    H0_noovlp(:) = 0.0_wp
-   sint = 0.0_wp
-   dpint = 0.0_wp
-   qpint = 0.0_wp
+   !$omp parallel do default(none) &
+   !$omp shared(nao, sint, dpint, qpint) &
+   !$omp private(i)
+   do i = 1, nao
+      sint(:,i) = 0.0_wp
+      dpint(:,:,i) = 0.0_wp
+      qpint(:,:,i) = 0.0_wp
+   end do
    ! --- Aufpunkt for moment operator
    point = 0.0_wp
 
