@@ -233,7 +233,7 @@ subroutine scf(env, mol, wfn, basis, pcem, xtbData, solvation, &
 !  broyden stuff
    logical  :: broy
 
-   type(xtb_zone) :: zone, zone_gemv, zone_multp_grad, zone_disp, zone_solv, zone_es
+   type(xtb_zone) :: zone, zone_gemv, zone_multp_grad, zone_disp, zone_solv, zone_es, zone_unk
 
 ! ------------------------------------------------------------------------
 !  initialization
@@ -552,8 +552,13 @@ subroutine scf(env, mol, wfn, basis, pcem, xtbData, solvation, &
       &     qpint(6,basis%nao,basis%nao), &
       &     source = 0.0_wp)
 
+   if (do_tracying) call zone_unk%start("src/scf_module.F90", "SelfEnergy", __LINE__, color=TracyColors%Tan2)
+
    call getSelfEnergy(xtbData%hamiltonian, xtbData%nShell, mol%at, cn=cn, &
       & selfEnergy=selfEnergy, dSEdcn=dSEdcn)
+
+   if (do_tracying) call zone_unk%end()
+
    ! compute integrals and prescreen to set up list arrays
    call latp%getLatticePoints(trans, sqrt(800.0_wp))
 #ifdef XTB_GPU
