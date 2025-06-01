@@ -205,6 +205,7 @@ end subroutine getCoordinationNumberNL
 !  function to return the respective CN.
 subroutine ncoordNeighs(mol, neighs, neighlist, kcn, cfunc, dfunc, enscale, &
       & rcov, en, cn, dcndr, dcndL)
+   use xtb_tracying
 
    !> Molecular structure information
    type(TMolecule), intent(in) :: mol
@@ -244,6 +245,10 @@ subroutine ncoordNeighs(mol, neighs, neighlist, kcn, cfunc, dfunc, enscale, &
 
    integer :: iat, jat, ati, atj, ij, img
    real(wp) :: r2, r1, rc, rij(3), countf, countd(3), stress(3, 3), den
+
+   type(xtb_zone) :: zone
+
+   if (do_tracying) call zone%start("src/disp/coordinationnumber.f90", "ncoordNeighs", __LINE__, color=TracyColors%OliveDrab1)
 
    cn = 0.0_wp
    dcndr = 0.0_wp
@@ -348,6 +353,7 @@ end subroutine getCoordinationNumberLP
 !  function to return the respective CN.
 subroutine ncoordLatP(mol, trans, cutoff, kcn, cfunc, dfunc, enscale, &
       & rcov, en, cn, dcndr, dcndL)
+   use xtb_tracying
 
    !> Molecular structure information
    type(TMolecule), intent(in) :: mol
@@ -387,6 +393,10 @@ subroutine ncoordLatP(mol, trans, cutoff, kcn, cfunc, dfunc, enscale, &
 
    integer :: iat, jat, nat, ati, atj, itr
    real(wp) :: r2, r1, rc, rij(3), countf, countd(3), stress(3, 3), den, cutoff2
+
+   type(xtb_zone) :: zone
+
+   if (do_tracying) call zone%start("src/disp/coordinationnumber.f90", "ncoordLatP", __LINE__, color=TracyColors%OliveDrab1)
 
    cn = 0.0_wp
    dcndr = 0.0_wp
