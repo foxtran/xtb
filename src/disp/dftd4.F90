@@ -629,7 +629,8 @@ subroutine d4(dispm,nat,ndim,at,wf,g_a,g_c,covcn,gw,c6abns)
 
    !$omp parallel do default(none) &
    !$omp shared(dispm,nat,ndim,at,wf,g_a,g_c,covcn,gw,c6abns,itbl) &
-   !$omp private(i,ia,is,icn,ii,iii,j,jj,ja,k,l,twf,norm)
+   !$omp private(i,ia,is,icn,ii,iii,j,jj,ja,k,l,twf,norm) &
+   !$omp schedule(dynamic,1)
    do i = 1, nat
       ia = at(i)
       norm = 0.0_wp
@@ -708,7 +709,7 @@ subroutine build_wdispmat(dispm,nat,ndim,at,itbl,xyz,par,c6abns,gw,wdispmat)
    !$omp shared(nat, at, xyz, itbl, par, dispm, c6abns, gw) &
    !$omp private(ia, k, j, ja, l, r4r2ij, cutoff, r2, oor6, oor8, oor10, &
    !$omp& ii, jj, gwgw, c8abns, c10abns) &
-   !$omp schedule(dynamic,32) collapse(2)
+   !$omp schedule(dynamic,1) collapse(2)
 !#endif
    do i = 1, nat
       do j = 1, nat
