@@ -1,0 +1,23 @@
+name: WinCI
+on: [push, pull_request]
+env:
+  BUILD_DIR: _build
+jobs:
+  windows-builds:
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        toolchain:
+          - {compiler: gcc, version: 13}
+          - {compiler: intel, version: '2025.2'}
+          - {compiler: intel-classic, version: '2021.12'}
+    steps:
+      - name: Install Fortran compilers
+        uses: fortran-lang/setup-fortran@v1
+        id: setup-fortran
+        with:
+          compiler: ${{ matrix.toolchain.compiler }}
+          version: ${{ matrix.toolchain.version }}
+      - name: Checkout code
+        uses: actions/checkout@v4
