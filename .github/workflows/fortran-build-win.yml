@@ -26,3 +26,7 @@ jobs:
           PACKAGE: ${{ matrix.toolchain.BLAS == 'MKL' && 'intel-mkl' || 'openblas' }}
       - name: Checkout code
         uses: actions/checkout@v4
+      - name: Configure build
+        run: cmake -B ${{ env.BUILD_DIR }} -DCMAKE_C_COMPILER=${{ env.CC }} -DCMAKE_Fortran_COMPILER=${{ env.FC }} -DCMAKE_BUILD_TYPE=Release -DBLA_VENDOR=${{ env.BLAS_IMPLEMENTATION }} -DBLA_STATIC=ON -DWITH_CPCMX=FALSE
+        env:
+          BLAS_IMPLEMENTATION: ${{ matrix.toolchain.BLAS == 'MKL' && 'Intel10_64lp' || 'OpenBLAS' }}
