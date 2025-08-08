@@ -9,9 +9,9 @@ jobs:
       fail-fast: false
       matrix:
         toolchain:
-          - {compiler: gcc, version: 13}
-          - {compiler: intel, version: '2025.0'}
-          - {compiler: intel-classic, version: '2021.12'}
+          - {compiler: gcc, version: 13, BLAS: 'OpenBLAS'}
+          - {compiler: intel, version: '2025.0', BLAS: 'MKL'}
+          - {compiler: intel-classic, version: '2021.12', BLAS: 'MKL'}
     steps:
       - name: Install Fortran compilers
         uses: fortran-lang/setup-fortran@v1
@@ -19,5 +19,10 @@ jobs:
         with:
           compiler: ${{ matrix.toolchain.compiler }}
           version: ${{ matrix.toolchain.version }}
+      - name: Install BLAS
+        run: vcpkg install ${{ env.PACKAGE }}
+        # do env setup in a bit stupid way
+        env:
+          PACKAGE: ${{ matrix.toolchain.BLAS == 'MKL' && 'intel-mkl' || 'openblas' }}
       - name: Checkout code
         uses: actions/checkout@v4
