@@ -905,6 +905,10 @@ subroutine gfnff_neigh(env,makeneighbor,natoms,at,xyz,rab,fq,f_in,f2_in,lintr, &
 
     !$omp end parallel
 
+    call insertion_sort(nlist%hblist1, nlist%nhb1)
+    call insertion_sort(nlist%hblist2, nlist%nhb2)
+    call insertion_sort(nlist%hblist3, nlist%nxb)
+
     nlist%hbrefgeo = xyz
 
   contains
@@ -944,6 +948,53 @@ subroutine gfnff_neigh(env,makeneighbor,natoms,at,xyz,rab,fq,f_in,f2_in,lintr, &
 !$    nxb = 0
 !$    hblist = 0
     end subroutine update_hblist3
+
+
+    logical function less(A, i, j)
+        implicit none
+        integer, intent(in) :: A(5,*)
+        integer, intent(in) :: i, j
+        integer :: k
+
+        do k = 1, 5
+            if (A(k,i) < A(k,j)) then
+                less = .true.
+                return
+            else if (A(k,i) > A(k,j)) then
+                less = .false.
+                return
+            end if
+        end do
+
+        ! columns are equal
+        less = .false.
+    end function less
+
+
+    !---------------------------------------------------------
+    ! Insertion sort of columns of A by lexicographic order
+    !---------------------------------------------------------
+    subroutine insertion_sort(A, ndim)
+        implicit none
+        integer, intent(inout) :: A(5, ndim)
+        integer, intent(in)    :: ndim
+
+        integer :: i, j
+        integer :: tmp(5)
+
+        do i = 2, ndim
+            tmp = A(:, i)
+            j = i
+
+            do while (j > 1 .and. less(A, j, j-1))
+                A(:, j) = A(:, j-1)
+                j = j - 1
+            end do
+
+            A(:, j) = tmp
+        end do
+
+    end subroutine insertion_sort
 
   end subroutine gfnff_hbset
 
