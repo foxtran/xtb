@@ -39,7 +39,7 @@ jobs:
          - name: Build project
            run: cmake --build ${{ env.BUILD_DIR }}
          - name: Run unit tests
-           run: lldb test/unit/xtb-tester -o r -o bt -o q -- gfn2
+           run: lldb test/unit/xtb-tester -o r -o bt -o q -- ptb
            working-directory: ${{ env.BUILD_DIR }}
            env:
             OMP_NUM_THREADS: 2,1
